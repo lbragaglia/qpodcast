@@ -47,7 +47,7 @@ def main():
         sys.exit(1)
 
     for item in items:
-        print(u'{0};{1};{2};{3};{4};{5}'.format(item['id'], item['name'], item['owners'][0]['displayName'], item['createdTime'], item['size'], item['webContentLink']).encode('utf-8'))
+        print(u'{0},{1},{2},{3},{4},{5}'.format(item['id'], item['name'], item['owners'][0]['displayName'], item['createdTime'], item['size'], item['webContentLink']).encode('utf-8'))
 
 if __name__ == '__main__':
     main()

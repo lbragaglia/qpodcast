@@ -47,7 +47,7 @@ def main():
     #fg.link(href='https://drive.google.com/drive/u/0/folders/1DvratOsY0QJxO-dcMFQYR4gLkRHPuJ7E', rel='self')
     fg.language('it')
 
-    filereader = UnicodeReader(sys.stdin, delimiter=';')
+    filereader = UnicodeReader(sys.stdin)
     for row in filereader:
         title = row[1].rsplit('.', 1)[0]
         url = row[5]
