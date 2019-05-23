@@ -1,6 +1,8 @@
 import sys
 import csv
 import codecs
+import urllib2
+import re
 from feedgen.feed import FeedGenerator
 
 class UTF8Recoder:
@@ -36,25 +38,25 @@ class UnicodeReader:
 def main():
     fg = FeedGenerator()
     fg.load_extension('podcast')
-    fg.id('https://drive.google.com/drive/u/0/folders/1DvratOsY0QJxO-dcMFQYR4gLkRHPuJ7E')
+    fg.id('https://lbragaglia.github.io/qpodcast/feed.xml')
     fg.title('Luther Blisset - Q')
-    fg.subtitle('Letto da Marco Meacci')
-    fg.description('Luther Blisset - Q')
+    fg.description('Il romanzo "Q" di Luther Blisset, letto da Marco Meacci')
     fg.author({'name':'Luther Blisset'})
     fg.contributor({'name':'Marco Meacci'})
-    fg.link(href='https://drive.google.com/drive/u/0/folders/1DvratOsY0QJxO-dcMFQYR4gLkRHPuJ7E', rel='alternate')
     fg.logo('https://www.einaudi.it/content/uploads/2010/01/978880620050GRA.JPG')
-    #fg.link(href='https://drive.google.com/drive/u/0/folders/1DvratOsY0QJxO-dcMFQYR4gLkRHPuJ7E', rel='self')
+    fg.link(href='https://lbragaglia.github.io/qpodcast/feed.xml', rel='self')
+    fg.link(href='https://lbragaglia.github.io/qpodcast/', rel='alternate')
     fg.language('it')
 
+    indexre = re.compile(r'\d\d\d - ')
     filereader = UnicodeReader(sys.stdin)
     for row in filereader:
         title = row[1].rsplit('.', 1)[0]
-        url = row[5]
+        url = 'https://lbragaglia.github.io/qpodcast/' + urllib2.quote(row[1].encode("utf8"))
         fe = fg.add_entry(order='append')
-        fe.id(url)
+        fe.id(row[1])
         fe.title(title)
-        fe.description(title)
+        fe.description(indexre.sub('', title))
         fe.author({'name':row[2]})
         fe.pubDate(row[3])
         fe.enclosure(url, row[4], 'audio/mpeg')
